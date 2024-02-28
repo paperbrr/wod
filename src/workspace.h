@@ -5,6 +5,7 @@
 
 #include "framework/UIElements/UI.h"
 #include "framework/Sprite/sprite.h"
+#include "framework/Block/block.h"
 
 
 typedef struct{
@@ -14,5 +15,9 @@ typedef struct{
 
     //Sprite
     Sprite* sprite;
+
+    //Blocks :D
+    Block* block1;
+    Block* block2;
 
 }Workspace;
