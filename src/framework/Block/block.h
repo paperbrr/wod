@@ -32,6 +32,6 @@ typedef struct Block{
 
 }Block;
 
-Block* createBlock(Block* head, SDL_Color blockColor, int width, int height);
+Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, BlockType type);
 void freeBlock(Block* block);
 void renderBlockNode(Block* head, SDL_Renderer* renderer);
