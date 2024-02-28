@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-Block* createBlock(Block* head, SDL_Color blockColor, int width, int height){
+Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, BlockType type){
 
     //create block and source rect
     Block* block = malloc(sizeof(Block));
@@ -14,6 +14,7 @@ Block* createBlock(Block* head, SDL_Color blockColor, int width, int height){
     block->sourceRect->h = height; block->sourceRect->w = width;
     block->blockColor = blockColor;
     block->actionFunc = NULL;
+    block->blockType = type;
 
     //node init
     //check if node is first node
