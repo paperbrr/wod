@@ -21,36 +21,31 @@ int main(int argc, char* argv[]) {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 
-    SDL_Color newColor = {100,150,200,255};
-    Sprite* newSprite = createSprite(newColor);
+    SDL_Color newColor = {135, 206, 250, 255};
+    
+    
+    SDL_Color groundCol = {255, 230, 153, 255};
+    Block* ground = createBlock(NULL, groundCol, 800, 100, BLOCK_NORMAL);
+    ground->sourceRect->x = 0; ground->sourceRect->y = 500;
+
+    Block* obstacle = createBlock(ground, groundCol, 50, 50, BLOCK_NORMAL);
+    obstacle->sourceRect->x = 200; obstacle->sourceRect->y = 100;
 
     int gameLoop = 1;
     SDL_Event event;
-    SDL_Color anotherColor = {50,100,150,255};
-
-    SDL_Color coolColor1 = {100,125,150,255};
-    SDL_Color coolColor2 = {255,125,150,255};
-    SDL_Color coolColor3 = {100,255,150,255};
-    SDL_Color coolColor4 = {100,125,255,255};
-
-    Block* block1 = createBlock(NULL, coolColor1, 200, 30);
-    block1->sourceRect->x = 20; block1->sourceRect->y = 20;
-    Block* block2 = createBlock(block1, coolColor2, 40, 40);
-    block2->sourceRect->x = 400; block2->sourceRect->y = 400;
-    Block* block3 = createBlock(block1, coolColor3, 200, 30);
-    block3->sourceRect->x = 110; block3->sourceRect->y = 90;
-
-    Block* block4 = createBlock(block1, coolColor4, 40, 40);
-    block4->sourceRect->x = 500; block4->sourceRect->y = 500;
-
+    SDL_Color anotherColor = {102, 204, 102, 255};
+    Sprite* newSprite = createSprite(anotherColor);
 
     while (gameLoop==1) {
 
-        SDL_SetRenderDrawColor(renderer, anotherColor.r, anotherColor.g, anotherColor.b, anotherColor.a);
+        spriteColliding(newSprite, ground);
+
+        SDL_SetRenderDrawColor(renderer, newColor.r, newColor.g, newColor.b, newColor.a);
         SDL_RenderClear(renderer);
         renderSprite(newSprite, renderer);
-        renderBlockNode(block1, renderer);
+        renderBlockNode(ground, renderer);
         SDL_RenderPresent(renderer);
+        
 
         if (SDL_PollEvent(&event) != 0) {
             if (event.type == SDL_QUIT) {
@@ -60,12 +55,11 @@ int main(int argc, char* argv[]) {
                 spriteMoveUpdate(newSprite, &event);
             }
         }
-        //SDL_Delay(50);
+        SDL_Delay(10);
     }
 
     freeSprite(newSprite);
-    freeBlock(block1);
-    freeBlock(block2);
+    freeBlock(ground);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
