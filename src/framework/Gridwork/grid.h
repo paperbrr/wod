@@ -52,3 +52,4 @@ Grid* createGrid(int winW, int winH, int cellSize);
 Cell* cellFindFromPos(Grid* grid, int x, int y);
 Cell* cellFindNeighbour(Grid* grid, Cell* cell, LookupOption dir);
 void cellChangeInArea(Grid* grid, int x, int y, int w, int h, FillState fillState);
+void getFilledCells(Grid* grid);
