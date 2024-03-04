@@ -36,6 +36,8 @@ int main(int argc, char* argv[]) {
     SDL_Color anotherColor = {102, 204, 102, 255};
     Sprite* newSprite = createSprite(anotherColor);
 
+    //getFilledCells(grid);
+
     while (gameLoop==1) {
 
         spriteColliding(newSprite, ground);
@@ -59,6 +61,7 @@ int main(int argc, char* argv[]) {
                 xPos = 30*floor((double) xPos/30);
                 yPos = 30*floor((double) yPos/30);
                 Cell* yes = cellFindFromPos(grid, xPos, yPos);
+                printf("x: %i, y: %i", xPos, yPos);
                 if (yes) {printf("%i\n",yes->filled);}
                 else {printf("tomfoolery :D");}
             }
