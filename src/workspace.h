@@ -16,6 +16,9 @@ typedef struct{
     //Sprite
     Sprite* sprite;
 
+    //Grid
+    Grid* grid;
+
     //Blocks :D
     Block* block1;
     Block* block2;
