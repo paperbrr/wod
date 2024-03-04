@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include "../Gridwork/grid.h"
 
 
 //enum to deal with different types of blocks
@@ -32,6 +33,6 @@ typedef struct Block{
 
 }Block;
 
-Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, BlockType type);
+Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, int x, int y, BlockType type, Grid* grid);
 void freeBlock(Block* block);
 void renderBlockNode(Block* head, SDL_Renderer* renderer);
