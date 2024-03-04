@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, BlockType type){
+Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, int x, int y, BlockType type, Grid* grid){
 
     //create block and source rect
     Block* block = malloc(sizeof(Block));
@@ -12,9 +12,13 @@ Block* createBlock(Block* head, SDL_Color blockColor, int width, int height, Blo
 
     //init 
     block->sourceRect->h = height; block->sourceRect->w = width;
+    block->sourceRect->x = x; block->sourceRect->y = y;
     block->blockColor = blockColor;
     block->actionFunc = NULL;
     block->blockType = type;
+
+    //fill cells in area
+    cellChangeInArea(grid, x, y, width, height, FILL);
 
     //node init
     //check if node is first node
