@@ -2,19 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+int hashPos(Grid* grid, int x, int y) {
+
+    /*
+    basically translates the two dimensions into a single dimension and scales, so that the point 'given' turns
+    into the indice in a 1-d array if the whole thing was just a 1-d array.
+    [1,2,3
+     4,5,6     -> in here, 6 is at [1,2]. this is translated into 5, indice of 6 in [1,2,3,4,5,6,7,8,9]
+     7,8,9]
+    */
+
+    //hash, maintain uniquenes
+    int hashedPos = y+(x/grid->cellSize);
+    return hashedPos;
+
+}
+
+
 Grid* createGrid(int winW, int winH, int cellSize){
 
     //allocate memory for grid, cellsArr
     int cellCount = (winW*winH)/(cellSize*cellSize);
     Grid* grid = malloc(sizeof(Grid));
-    grid->cellArr = malloc(sizeof(Cell*)*cellCount);
+    grid->cellArr = malloc(sizeof(Cell*)*cellCount*2);  //reduces the chances of collision! (actually no but will work on this)
     if (grid->cellArr==NULL || grid==NULL){printf("error");return NULL;}
 
     //grid init
-    grid->cellCount = 0;
+    grid->cellCount = cellCount;
     grid->winH = winH;
     grid->winW = winW;
     grid->cellSize = cellSize;
+    int testCount = 0;
 
     //iterate through ALL spaces,
     for (int y=0; y<winH; y+=cellSize){
@@ -26,12 +45,11 @@ Grid* createGrid(int winW, int winH, int cellSize){
             newCell->cellX = x; newCell->cellY = y;
             newCell->filled = 0;
 
-            //assign cell to grid
-            grid->cellArr[grid->cellCount] = newCell;
-            grid->cellCount += 1;
+            //assign cell to grid after hashing key
+            grid->cellArr[hashPos(grid, x, y)] = newCell;
+            testCount += 1;
         }
     }
-
     return grid;
 
 }
@@ -39,19 +57,16 @@ Grid* createGrid(int winW, int winH, int cellSize){
 
 Cell* cellFindFromPos(Grid* grid, int x, int y){
 
-    //variables for simplification
-    Cell** cellArr = grid->cellArr;
-    Cell* requiredCell = NULL;
+    //init, hash key
+    int arrIndex = hashPos(grid, x, y);
+    Cell* cell = NULL;
 
-    //iterate through cells, match x and y vals, return if found
-    for (int i=0; i<grid->cellCount; i++){
-        requiredCell = cellArr[i];
-        if (requiredCell->cellX == x && requiredCell->cellY == y) {
-            return requiredCell;
-        }
+    //assign hashed key if valid
+    if (arrIndex>=0 && arrIndex<=grid->cellCount){
+        Cell* cell = grid->cellArr[arrIndex];
     }
 
-    return NULL;
+    return cell;
 
 }
 
@@ -64,16 +79,12 @@ Cell* cellFindNeighbour(Grid* grid, Cell* cell, LookupOption dir){
     switch (dir){
         case CELL_UP:
             return cellFindFromPos(grid, cell->cellX, cell->cellY-cellSize);
-            break;
         case CELL_DOWN:
             return cellFindFromPos(grid, cell->cellX, cell->cellY+cellSize);
-            break;
         case CELL_LEFT:
             return cellFindFromPos(grid, cell->cellX-cellSize, cell->cellY);
-            break;
         case CELL_RIGHT:
             return cellFindFromPos(grid, cell->cellX+cellSize, cell->cellY);
-            break;
     }
 
     return NULL;
