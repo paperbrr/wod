@@ -14,7 +14,7 @@ int hashPos(Grid* grid, int x, int y) {
     */
 
     //hash, maintain uniquenes
-    int hashedPos = y+(x/grid->cellSize);
+    int hashedPos = (y/grid->cellSize)*(grid->winW/grid->cellSize)+(x/grid->cellSize);
     return hashedPos;
 
 }
@@ -33,7 +33,6 @@ Grid* createGrid(int winW, int winH, int cellSize){
     grid->winH = winH;
     grid->winW = winW;
     grid->cellSize = cellSize;
-    int testCount = 0;
 
     //iterate through ALL spaces,
     for (int y=0; y<winH; y+=cellSize){
@@ -47,7 +46,6 @@ Grid* createGrid(int winW, int winH, int cellSize){
 
             //assign cell to grid after hashing key
             grid->cellArr[hashPos(grid, x, y)] = newCell;
-            testCount += 1;
         }
     }
     return grid;
@@ -62,8 +60,8 @@ Cell* cellFindFromPos(Grid* grid, int x, int y){
     Cell* cell = NULL;
 
     //assign hashed key if valid
-    if (arrIndex>=0 && arrIndex<=grid->cellCount){
-        Cell* cell = grid->cellArr[arrIndex];
+    if (arrIndex>=0 && arrIndex<grid->cellCount){
+        return grid->cellArr[arrIndex];
     }
 
     return cell;
@@ -104,4 +102,12 @@ void cellChangeInArea(Grid* grid, int x, int y, int w, int h, FillState fillStat
         }
     }
 
+}
+
+
+void getFilledCells(Grid* grid){
+    for (int i=0;i<grid->cellCount;i++){
+        if (grid->cellArr[i]==NULL){printf("DEATH\n");}
+        printf("cell count: %i      cell pos: %i, %i        cell fill: %i\n", i, grid->cellArr[i]->cellX, grid->cellArr[i]->cellY, grid->cellArr[i]->filled);
+    }
 }
